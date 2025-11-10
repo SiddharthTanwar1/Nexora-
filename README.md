@@ -1,1 +1,9 @@
 # Nexora-
+Why I want to work at Nexora
+Honestly, Nexora feels like the kind of place where what I’m already building lines up perfectly with what’s next. I’ve been working hands-on with AI models—embedding generation, vector search, model evaluation, and GenAI workflows—so the idea of a vibe-based recommendation engine isn’t just exciting, it’s familiar territory. My recent work involved prototyping a similar mini rec-system that used OpenAI embeddings, cosine similarity, and multiple retrieval strategies to match products by mood or intent. Beyond coding, I enjoy shaping AI systems that feel human—turning abstract “vibes” into quantifiable data that can power real-world personalization. Nexora’s focus on blending fashion, AI, and influencer discovery feels like a rare intersection of creativity and applied machine learning where my technical background in Python, ML, NLP, and deep learning can actually make something tangible and fun for users.
+How my innovation aligns with Nexora’s expectations
+In my prototype, I designed three complementary retrieval strategies—each optimized for a different trade-off:
+Fast method – Uses only pre-normalized description embeddings for ultra-low latency searches. Ideal for real-time vibe lookups.
+Accurate method – Combines product descriptions, vibe embeddings, and tag-overlap scores. It sacrifices some speed for higher semantic precision.
+Hybrid method – A two-stage pipeline: fast pre-filter + accurate re-ranking. It balances speed and accuracy, similar to how a production system would scale with Pinecone or other vector databases.
+Together, these approaches show three engineering mindsets—speed, precision, and balance—which directly map to how Nexora is experimenting with scalable, vibe-aware recommendations. The design also mirrors the internship goals: embedding generation, vector search integration, latency evaluation, and GenAI-driven refinements—all within one reproducible notebook setup.
