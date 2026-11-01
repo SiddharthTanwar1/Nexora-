@@ -1,29 +1,50 @@
-# Why I Want to Work at Nexora
+![Vibe Matcher — Three retrieval strategies for fashion discovery.](docs/assets/banner.svg)
 
-Honestly, Nexora feels like the kind of place where what I’m already building lines up perfectly with what’s next.  
-I’ve been working hands-on with AI models—embedding generation, vector search, model evaluation, and GenAI workflows—so the idea of a *vibe-based recommendation engine* isn’t just exciting, it’s familiar territory.  
+# Vibe Matcher · Fashion retrieval prototype
 
-My recent work involved prototyping a similar mini recommendation system that used OpenAI embeddings, cosine similarity, and multiple retrieval strategies to match products by mood or intent. Beyond coding, I enjoy shaping AI systems that feel *human*—turning abstract “vibes” into quantifiable data that can power real-world personalization.  
+A notebook-based fashion recommender that compares three ways to match a natural-language mood or intent to a small, hand-authored product catalog.
 
-Nexora’s focus on blending fashion, AI, and influencer discovery feels like a rare intersection of creativity and applied machine learning where my technical background in Python, ML, NLP, and deep learning can actually make something tangible and fun for users.
+[Open the notebook](nexx.ipynb) · [Original motivation and design notes](README-ORIGINAL.md)
 
----
+## Three retrieval strategies
 
-# Innovation in My Approach
+| Strategy | Ranking approach | Trade-off being explored |
+|---|---|---|
+| `search_fast` | Normalized description embeddings and dot products | Simple first-stage retrieval |
+| `search_accurate` | Description similarity, vibe similarity and tag overlap | A richer scoring function |
+| `search_hybrid` | Fast candidate filtering, then richer reranking | Candidate efficiency with reranking |
 
-In my prototype, I designed **three complementary retrieval strategies**, each optimized for a specific trade-off:
+The catalog contains ten illustrative products, each with a name, description and vibe tags. Supporting utilities handle normalization, query embeddings, token overlap, low-score fallback messages and comparison plots. These are prototype design choices; the repository does not establish production-scale latency or retrieval-quality benchmarks.
 
-1. **Fast Method**  
-   Uses only pre-normalized description embeddings for ultra-low latency searches.  
-   Ideal for real-time vibe lookups.
+```mermaid
+flowchart LR
+  Q[Natural-language vibe] --> E[Query embedding]
+  C[Product descriptions and tags] --> P[Catalog vectors]
+  E --> R[Fast, accurate or hybrid ranking]
+  P --> R
+  R --> M[Ranked matches and fallback]
+```
 
-2. **Accurate Method**  
-   Combines product descriptions, vibe embeddings, and tag-overlap scores.  
-   Sacrifices some speed for higher semantic precision.
+## Inspect and reproduce
 
-3. **Hybrid Method**  
-   A two-stage pipeline: fast pre-filter + accurate re-ranking.  
-   Balances speed and accuracy, similar to how a production system would scale with Pinecone or other vector databases.
+Open `nexx.ipynb` in Jupyter. The notebook imports NumPy, pandas, scikit-learn, matplotlib and the OpenAI Python client. The original introduction describes a dummy-embedding demo, but the checked-in implementation calls `client.embeddings.create()` and initializes the client with `os.getenv("")`.
 
-Together, these approaches demonstrate three core engineering mindsets—**speed**, **precision**, and **balance**—which directly map to Nexora’s goals of building scalable, vibe-aware recommendations.  
-The design also mirrors the internship expectations: embedding generation, vector search integration, latency evaluation, and GenAI-driven refinements—all within one reproducible notebook framework.
+**The current notebook therefore does not run offline as advertised and needs credential configuration before that cell can execute.** Choose deliberately between implementing a deterministic mock for a demonstration or configuring an authorized provider account for real embeddings. Do not place credentials in the notebook or its saved outputs. No API calls or credential changes were made during this repository refresh.
+
+## Evaluation considerations
+
+- Keep the same catalog and query set across all three methods.
+- Separate query-embedding time from ranking time when comparing latency.
+- Record ranking weights, candidate count, top-k and fallback threshold.
+- Use labeled relevance judgments before treating “accurate” as a measured result.
+- Ten authored products demonstrate mechanics; they do not establish generalization to a real catalog.
+
+## Repository map
+
+| File | Purpose |
+|---|---|
+| `nexx.ipynb` | Catalog, embeddings, retrieval methods and comparisons |
+| `README-ORIGINAL.md` | Original Nexora motivation and approach |
+| `docs/assets/banner.svg` | Editable repository artwork |
+
+This is a research/prototype notebook, not a hosted shopping service. No new license or empirical performance claim is added.
